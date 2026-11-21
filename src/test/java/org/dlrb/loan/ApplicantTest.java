@@ -28,7 +28,6 @@ public class ApplicantTest {
         assertFalse(applicant.hasOverdueDebt());
     }
 
-    // ---- Age: Boundary Value Analysis ----
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 119, 120})
@@ -45,7 +44,6 @@ public class ApplicantTest {
                 () -> new Applicant(age, VALID_INCOME, VALID_SCORE, false));
     }
 
-    // ---- Credit score: Boundary Value Analysis ----
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 1899, 1900})
@@ -62,7 +60,6 @@ public class ApplicantTest {
                 () -> new Applicant(VALID_AGE, VALID_INCOME, score, false));
     }
 
-    // ---- Income: Negative testing ----
 
     @ParameterizedTest
     @ValueSource(strings = {"0", "-0.01", "-5000"})
