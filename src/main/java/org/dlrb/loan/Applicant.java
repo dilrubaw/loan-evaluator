@@ -13,6 +13,11 @@ public class Applicant {
     private final int creditScore;
     private final boolean hasOverdueDebt;
 
+    /**
+     * Creates an applicant and validates the input (rule R7).
+     * @throws IllegalArgumentException if age is outside 0-120, income is null or not positive, or credit score is outside 0-1900
+     */
+
     public Applicant(int age, BigDecimal monthlyIncome, int creditScore, boolean hasOverdueDebt) {
         if (age < MIN_VALID_AGE || age > MAX_VALID_AGE) {
             throw new IllegalArgumentException("Age must be between 0 and 120");
