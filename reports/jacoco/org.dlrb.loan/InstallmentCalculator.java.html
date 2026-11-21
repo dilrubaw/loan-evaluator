@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="tr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InstallmentCalculator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">loan-evaluator</a> &gt; <a href="index.source.html" class="el_package">org.dlrb.loan</a> &gt; <span class="el_source">InstallmentCalculator.java</span></div><h1>InstallmentCalculator.java</h1><pre class="source lang-java linenums">package org.dlrb.loan;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
+<span class="fc" id="L7">public class InstallmentCalculator {</span>
+<span class="fc" id="L8">    private static final MathContext PRECISION = MathContext.DECIMAL128;</span>
+    private static final int MONEY_SCALE = 2;
+
+    public BigDecimal calculateMonthlyInstallment(LoanApplication application) {
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (application == null) {</span>
+<span class="fc" id="L13">            throw new IllegalArgumentException(&quot;Application cannot be null&quot;);</span>
+        }
+<span class="fc" id="L15">        BigDecimal principal = application.getAmount();</span>
+<span class="fc" id="L16">        BigDecimal rate = application.getLoanType().getMonthlyRate();</span>
+<span class="fc" id="L17">        int months = application.getTermMonths();</span>
+
+<span class="fc" id="L19">        BigDecimal growth = BigDecimal.ONE.add(rate).pow(months, PRECISION);</span>
+<span class="fc" id="L20">        BigDecimal numerator = principal.multiply(rate).multiply(growth);</span>
+<span class="fc" id="L21">        BigDecimal denominator = growth.subtract(BigDecimal.ONE);</span>
+
+<span class="fc" id="L23">        return numerator.divide(denominator, PRECISION)</span>
+<span class="fc" id="L24">                .setScale(MONEY_SCALE, RoundingMode.HALF_UP);</span>
+    }
+
+    /**
+     * Calculates the monthly installment (rule R6), rounded to 2 decimals.
+     * @param application the loan application
+     * @return the monthly installment
+     * @throws IllegalArgumentException if application is null
+     */
+
+    public BigDecimal calculateTotalRepayment(LoanApplication application) {
+<span class="fc" id="L35">        BigDecimal installment = calculateMonthlyInstallment(application);</span>
+<span class="fc" id="L36">        return installment.multiply(BigDecimal.valueOf(application.getTermMonths()));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="tr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoanEvaluator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">loan-evaluator</a> &gt; <a href="index.source.html" class="el_package">org.dlrb.loan</a> &gt; <span class="el_source">LoanEvaluator.java</span></div><h1>LoanEvaluator.java</h1><pre class="source lang-java linenums">package org.dlrb.loan;
+import java.math.BigDecimal;
+
+public class LoanEvaluator {
+    private static final int MIN_AGE = 18;
+    private static final int MAX_AGE = 65;
+    private static final int MIN_SCORE_FOR_LOAN = 700;
+    private static final int MIN_SCORE_WITHOUT_GUARANTOR = 1200;
+<span class="fc" id="L9">    private static final BigDecimal MAX_DEBT_RATIO = new BigDecimal(&quot;0.50&quot;);</span>
+
+    private final InstallmentCalculator calculator;
+
+<span class="fc" id="L13">    public LoanEvaluator(InstallmentCalculator calculator) {</span>
+<span class="fc bfc" id="L14" title="All 2 branches covered.">        if (calculator == null) {</span>
+<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;Calculator cannot be null&quot;);</span>
+        }
+<span class="fc" id="L17">        this.calculator = calculator;</span>
+<span class="fc" id="L18">    }</span>
+
+    /**
+     * Evaluates a loan application by the business rules R1-R4.
+     * @param application the loan application to evaluate
+     * @return APPROVED, APPROVED_WITH_GUARANTOR or REJECTED
+     * @throws IllegalArgumentException if application is null
+     */
+
+    public Decision evaluate(LoanApplication application) {
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (application == null) {</span>
+<span class="fc" id="L29">            throw new IllegalArgumentException(&quot;Application cannot be null&quot;);</span>
+        }
+<span class="fc" id="L31">        Applicant applicant = application.getApplicant();</span>
+
+<span class="fc bfc" id="L33" title="All 4 branches covered.">        if (applicant.getAge() &lt; MIN_AGE || applicant.getAge() &gt; MAX_AGE) {</span>
+<span class="fc" id="L34">            return Decision.REJECTED;</span>
+        }
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (applicant.hasOverdueDebt()) {</span>
+<span class="fc" id="L37">            return Decision.REJECTED;</span>
+        }
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (applicant.getCreditScore() &lt; MIN_SCORE_FOR_LOAN) {</span>
+<span class="fc" id="L40">            return Decision.REJECTED;</span>
+        }
+
+<span class="fc" id="L43">        BigDecimal installment = calculator.calculateMonthlyInstallment(application);</span>
+<span class="fc" id="L44">        BigDecimal maxInstallment = applicant.getMonthlyIncome().multiply(MAX_DEBT_RATIO);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (installment.compareTo(maxInstallment) &gt; 0) {</span>
+<span class="fc" id="L46">            return Decision.REJECTED;</span>
+        }
+
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (applicant.getCreditScore() &lt; MIN_SCORE_WITHOUT_GUARANTOR) {</span>
+<span class="fc" id="L50">            return Decision.APPROVED_WITH_GUARANTOR;</span>
+        }
+<span class="fc" id="L52">        return Decision.APPROVED;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="tr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoanApplication.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">loan-evaluator</a> &gt; <a href="index.source.html" class="el_package">org.dlrb.loan</a> &gt; <span class="el_source">LoanApplication.java</span></div><h1>LoanApplication.java</h1><pre class="source lang-java linenums">package org.dlrb.loan;
+
+import java.math.BigDecimal;
+
+public class LoanApplication {
+    private final Applicant applicant;
+    private final LoanType loanType;
+    private final BigDecimal amount;
+    private final int termMonths;
+
+<span class="fc" id="L11">    public LoanApplication(Applicant applicant, LoanType loanType, BigDecimal amount, int termMonths) {</span>
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (applicant == null) {</span>
+<span class="fc" id="L13">            throw new IllegalArgumentException(&quot;Applicant cannot be null&quot;);</span>
+        }
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        if (loanType == null) {</span>
+<span class="fc" id="L16">            throw new IllegalArgumentException(&quot;Loan type cannot be null&quot;);</span>
+        }
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (amount == null) {</span>
+<span class="fc" id="L19">            throw new IllegalArgumentException(&quot;Amount cannot be null&quot;);</span>
+        }
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (amount.scale() &gt; 2) {</span>
+<span class="fc" id="L22">            throw new IllegalArgumentException(&quot;Amount cannot have more than 2 decimal places&quot;);</span>
+        }
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (amount.compareTo(loanType.getMinAmount()) &lt; 0</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">                || amount.compareTo(loanType.getMaxAmount()) &gt; 0) {</span>
+<span class="fc" id="L26">            throw new IllegalArgumentException(&quot;Amount is outside the limits of &quot; + loanType);</span>
+        }
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (termMonths &lt; loanType.getMinTermMonths()</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                || termMonths &gt; loanType.getMaxTermMonths()) {</span>
+<span class="fc" id="L30">            throw new IllegalArgumentException(&quot;Term is outside the limits of &quot; + loanType);</span>
+        }
+<span class="fc" id="L32">        this.applicant = applicant;</span>
+<span class="fc" id="L33">        this.loanType = loanType;</span>
+<span class="fc" id="L34">        this.amount = amount;</span>
+<span class="fc" id="L35">        this.termMonths = termMonths;</span>
+<span class="fc" id="L36">    }</span>
+
+    public Applicant getApplicant() {
+<span class="fc" id="L39">        return applicant;</span>
+    }
+
+    public LoanType getLoanType() {
+<span class="fc" id="L43">        return loanType;</span>
+    }
+
+    public BigDecimal getAmount() {
+<span class="fc" id="L47">        return amount;</span>
+    }
+
+    public int getTermMonths() {
+<span class="fc" id="L51">        return termMonths;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
