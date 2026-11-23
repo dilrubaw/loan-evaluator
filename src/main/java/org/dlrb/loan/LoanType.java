@@ -3,7 +3,7 @@ import java.math.BigDecimal;
 
 public enum LoanType {
     PERSONAL(new BigDecimal("1000"), new BigDecimal("500000"), 3, 36, new BigDecimal("0.030")),
-    VEHICLE(new BigDecimal("1000"), new BigDecimal("1000000"), 3, 60, new BigDecimal("0.025"));
+    VEHICLE(new BigDecimal("1000"), new BigDecimal("1000000"), 3, 48, new BigDecimal("0.025"));
 
     private final BigDecimal minAmount;
     private final BigDecimal maxAmount;
