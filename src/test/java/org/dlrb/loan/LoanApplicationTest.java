@@ -76,7 +76,7 @@ public class LoanApplicationTest {
             "PERSONAL, 2",
             "PERSONAL, 37",
             "VEHICLE,  2",
-            "VEHICLE,  61"
+            "VEHICLE,  49"
     })
     @DisplayName("Term outside limits is rejected")
     void rejectsTermOutsideLimits(LoanType type, int term) {
