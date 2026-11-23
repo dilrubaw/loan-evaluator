@@ -7,7 +7,13 @@ import java.math.RoundingMode;
 public class InstallmentCalculator {
     private static final MathContext PRECISION = MathContext.DECIMAL128;
     private static final int MONEY_SCALE = 2;
-
+    
+    /**
+     * Calculates the monthly installment (rule R6), rounded to 2 decimals.
+     * @param application the loan application
+     * @return the monthly installment
+     * @throws IllegalArgumentException if application is null
+     */
     public BigDecimal calculateMonthlyInstallment(LoanApplication application) {
         if (application == null) {
             throw new IllegalArgumentException("Application cannot be null");
@@ -24,13 +30,7 @@ public class InstallmentCalculator {
                 .setScale(MONEY_SCALE, RoundingMode.HALF_UP);
     }
 
-    /**
-     * Calculates the monthly installment (rule R6), rounded to 2 decimals.
-     * @param application the loan application
-     * @return the monthly installment
-     * @throws IllegalArgumentException if application is null
-     */
-
+    
     public BigDecimal calculateTotalRepayment(LoanApplication application) {
         BigDecimal installment = calculateMonthlyInstallment(application);
         return installment.multiply(BigDecimal.valueOf(application.getTermMonths()));
